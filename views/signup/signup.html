@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="txt_field">
-                    <input type="number" name="phoneNo"  required/>
+                    <input type="text" name="phoneNo"  required/>
                     <span></span>
                     <label> phoneNo</label>
                 </div>
@@ -63,7 +63,7 @@
                 event.preventDefault();
                 const username = event.target.username.value;
                 const email = event.target.emailId.value;
-                const phoneNo = event.target.phoneNo;
+                const phoneNo = event.target.phoneNo.value;
                 const password = event.target.password.value;
                 //const exist= document.querySelector('existing');
                 //exist.innerHTML = '';
@@ -75,7 +75,7 @@
                     phoneNo,
                     password
                 }
-                console.log('1255');
+                console.log(obj);
 
                 axios.post("http://localhost:7000/user/signup", obj)
                 .then((response)=>{
