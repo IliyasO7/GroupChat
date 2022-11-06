@@ -1,0 +1,256 @@
+
+ <!--  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group-Chat</title>
+    <link rel="icon" href="data:;base64,=">
+    <link rel="stylesheet" href="./chat.css">
+</head>
+<body>
+    <div class="nav-div">
+        <div class="nav-user-div"><img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"><h2 id="username">Rahul</h2></div>
+          <div class="logout-div">
+            <button id="logout" type="button">LogOut</button>
+          </div>
+    </div>
+    <div class="container-div">
+        <div class="chat-container-div">
+
+            <div class="notification-div">
+              <h4 class="notfification">You joined!</h4>
+            </div>
+
+            <div class="notification-div">
+              <h4 class="notfification">Shrey joined!</h4>
+            </div>
+
+            <div class="msg-div">
+              <div class="resize-received">
+                <div class="received">
+                <p class="received-name">Shrey</p>
+                <p class="received-msg">Hey</p>
+                <p class="received-time">7:00pm</p>
+            </div>
+              </div>
+            </div>
+
+            <div class="msg-div">
+              <div class="sent">
+                <p class="sent-name">You</p>
+                <p class="sent-msg">Hello Bro</p>
+                <p class="sent-time">7:15pm</p>
+               
+              </div>
+            </div>
+
+            <div class="msg-div">
+                <div class="resize-sent">
+              <div class="sent">
+                <p class="sent-name">You</p>
+                <p class="sent-msg">How are you?</p>
+                <p class="sent-time">10:01pm</p>
+               
+              </div>
+            </div>
+            </div>
+
+            <div class="msg-div">
+                <div class="resize-received">
+                <div class="received">
+                  <p class="received-name">Shrey</p>
+                  <p class="received-msg">Good! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates quod ratione obcaecati accusantium ipsa error, perspiciatis eum aliquam culpa molestias, vero sunt magnam maxime quos eligendi ab non! Ducimus?</p>
+                  <p class="received-time">10:02pm</p>
+                </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <form>
+            <input type="text">
+            <input type="submit" value="submit">
+
+            <input type="text">
+            <button type="submit">send</button>
+
+            
+        </form>
+    </div>
+  
+
+
+
+    *************************
+    <div class="conversation">
+                <div class="conversation-container">
+                </div>
+                <form class="conversation-compose">
+                  <div class="emoji">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" id="smiley" x="3147" y="3209"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.153 11.603c.795 0 1.44-.88 1.44-1.962s-.645-1.96-1.44-1.96c-.795 0-1.44.88-1.44 1.96s.645 1.965 1.44 1.965zM5.95 12.965c-.027-.307-.132 5.218 6.062 5.55 6.066-.25 6.066-5.55 6.066-5.55-6.078 1.416-12.13 0-12.13 0zm11.362 1.108s-.67 1.96-5.05 1.96c-3.506 0-5.39-1.165-5.608-1.96 0 0 5.912 1.055 10.658 0zM11.804 1.01C5.61 1.01.978 6.034.978 12.23s4.826 10.76 11.02 10.76S23.02 18.424 23.02 12.23c0-6.197-5.02-11.22-11.216-11.22zM12 21.355c-5.273 0-9.38-3.886-9.38-9.16 0-5.272 3.94-9.547 9.214-9.547a9.548 9.548 0 0 1 9.548 9.548c0 5.272-4.11 9.16-9.382 9.16zm3.108-9.75c.795 0 1.44-.88 1.44-1.963s-.645-1.96-1.44-1.96c-.795 0-1.44.878-1.44 1.96s.645 1.963 1.44 1.963z" fill="#7d8489"/></svg>
+                  </div>
+                  <input class="input-msg" name="input" placeholder="Type a message" autocomplete="off" autofocus></input>
+                  <div class="photo">
+                    <i class="zmdi zmdi-camera"></i>
+                  </div>
+                  <button class="send">
+                    <div class="circle">
+                      <i class="zmdi zmdi-mail-send"></i>
+                    </div>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+   
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WhatsApp</title>
+  <link rel="stylesheet" href="./chat.css">
+
+  <meta name="theme-color" content="#054d44">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, initial-scale=1">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,600">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.1.2/css/material-design-iconic-font.min.css">
+  <link rel="stylesheet" href="styles/vendor/devices.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <div class="page">
+    <div class="marvel-device nexus5">
+      <div class="top-bar"></div>
+      <div class="sleep"></div>
+      <div class="volume"></div>
+      <div class="camera"></div>
+      <div class="screen">
+        <div class="screen-container">
+          <div class="status-bar">
+            <div class="time"></div>
+            <div class="battery">
+              <i class="zmdi zmdi-battery"></i>
+            </div>
+            <div class="network">
+              <i class="zmdi zmdi-network"></i>
+            </div>
+            <div class="wifi">
+              <i class="zmdi zmdi-wifi-alt-2"></i>
+            </div>
+            <div class="star">
+              <i class="zmdi zmdi-star"></i>
+            </div>
+          </div>
+          <div class="chat">
+            <div class="chat-container">
+              <div class="user-bar">
+                <div class="back">
+                  <i class="zmdi zmdi-arrow-left"></i>
+                </div>
+                <div class="avatar">
+                  <img src="/images/liferay-logo.png" alt="Avatar" width="36" height="36">
+                </div>
+                <div class="name">
+                  <span>Liferay</span>
+                  <span class="status">online</span>
+                </div>
+                <div class="actions more">
+                  <i class="zmdi zmdi-more-vert"></i>
+                </div>
+                <div class="actions attachment">
+                  <i class="zmdi zmdi-attachment-alt"></i>
+                </div>
+                <div class="actions">
+                  <i class="zmdi zmdi-phone"></i>
+                </div>
+              </div>
+
+              <div class="notification-div">
+                <h4 class="notfification">You joined!</h4>
+              </div>
+  
+              <div class="notification-div">
+                <h4 class="notfification">Shrey joined!</h4>
+              </div>
+  
+              <div class="msg-div">
+                <div class="resize-received">
+                  <div class="received">
+                  <p class="received-name">Shrey</p>
+                  <p class="received-msg">Hey</p>
+                  <p class="received-time">7:00pm</p>
+              </div>
+                </div>
+              </div>
+  
+              <div class="msg-div">
+                <div class="sent">
+                  <p class="sent-name">You</p>
+                  <p class="sent-msg">Hello Bro</p>
+                  <p class="sent-time">7:15pm</p>
+                 
+                </div>
+              </div>
+  
+              <div class="msg-div">
+                  <div class="resize-sent">
+                <div class="sent">
+                  <p class="sent-name">You</p>
+                  <p class="sent-msg">How are you?</p>
+                  <p class="sent-time">10:01pm</p>
+                 
+                </div>
+              </div>
+              </div>
+  
+              <div class="msg-div">
+                  <div class="resize-received">
+                  <div class="received">
+                    <p class="received-name">Shrey</p>
+                    <p class="received-msg">Good! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates quod ratione obcaecati accusantium ipsa error, perspiciatis eum aliquam culpa molestias, vero sunt magnam maxime quos eligendi ab non! Ducimus?</p>
+                    <p class="received-time">10:02pm</p>
+                  </div>
+              </div>
+              </div>
+
+              <div class="message">
+                <form>
+                    
+        
+                    <input type="text">
+                    <button type="submit">send</button>
+        
+                    
+                </form>
+            </div>
+          </div>
+  
+      </div>
+      <div>
+
+              
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</body>
+</html>
