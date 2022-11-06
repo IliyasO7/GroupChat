@@ -36,7 +36,7 @@ app.use(cors());
 
 
 const userRoutes = require('./routes/users');
-
+const ForgotRoutes = require('./routes/password');
 
 app.use(express.json())//instead of body parson json
 
@@ -48,6 +48,13 @@ app.use(express.json())//instead of body parson json
 
 
 app.use('/user',userRoutes);
+
+app.use('/pass',ForgotRoutes );
+
+
+
+User.hasMany(Forgotpassword);
+Forgotpassword.belongsTo(User);
 
 
 /*
