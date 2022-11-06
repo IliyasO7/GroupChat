@@ -65,7 +65,7 @@
                     password
                 }
                 console.log('1255');
-                
+
 
                 axios.post("http://localhost:7000/user/login", obj)
                 .then((response)=>{
@@ -73,7 +73,7 @@
                     localStorage.setItem('token', response.data.token);
                     if(response.status === 200)
                     {
-                       //  window.location.href = "../expense/expense.html"
+                         window.location.href = "../chatpage/chat.html"
                         // redirect('./expense.html')
                         console.log('login  complete');
                     }

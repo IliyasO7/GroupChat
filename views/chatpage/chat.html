@@ -117,6 +117,7 @@
   <meta charset="UTF-8">
   <title>WhatsApp</title>
   <link rel="stylesheet" href="./chat.css">
+  <script src="./chat.js"></script>
 
   <meta name="theme-color" content="#054d44">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -141,21 +142,7 @@
       <div class="camera"></div>
       <div class="screen">
         <div class="screen-container">
-          <div class="status-bar">
-            <div class="time"></div>
-            <div class="battery">
-              <i class="zmdi zmdi-battery"></i>
-            </div>
-            <div class="network">
-              <i class="zmdi zmdi-network"></i>
-            </div>
-            <div class="wifi">
-              <i class="zmdi zmdi-wifi-alt-2"></i>
-            </div>
-            <div class="star">
-              <i class="zmdi zmdi-star"></i>
-            </div>
-          </div>
+
           <div class="chat">
             <div class="chat-container">
               <div class="user-bar">
@@ -163,21 +150,17 @@
                   <i class="zmdi zmdi-arrow-left"></i>
                 </div>
                 <div class="avatar">
-                  <img src="/images/liferay-logo.png" alt="Avatar" width="36" height="36">
+                  <img src="https://scontent.fpnq1-1.fna.fbcdn.net/v/t39.30808-1/311467854_1755002154857501_7419641158350127624_n.jpg?stp=dst-jpg_p240x240&_nc_cat=107&ccb=1-7&_nc_sid=7206a8&_nc_ohc=HIDYQgzRUiUAX9kL043&_nc_ht=scontent.fpnq1-1.fna&oh=00_AfCK-NL5iIwrkffFEigqn6B0QfjGhwum1b2SsRsKo1CvgQ&oe=636CF937" alt="Avatar" width="36" height="36">
                 </div>
                 <div class="name">
-                  <span>Liferay</span>
+                  <span>Iliyas</span>
                   <span class="status">online</span>
                 </div>
-                <div class="actions more">
-                  <i class="zmdi zmdi-more-vert"></i>
-                </div>
-                <div class="actions attachment">
-                  <i class="zmdi zmdi-attachment-alt"></i>
-                </div>
-                <div class="actions">
-                  <i class="zmdi zmdi-phone"></i>
-                </div>
+
+                <div class="logout-div">
+                    <button id="logout" type="button">LogOut</button>
+                  </div>
+                
               </div>
 
               <div class="notification-div">
@@ -228,20 +211,44 @@
               </div>
               </div>
 
-              <div class="message">
-                <form>
-                    
-        
-                    <input type="text">
-                    <button type="submit">send</button>
-        
-                    
+              <div >
+                <form onsubmit="Send(event)" class="style-form" id ="chat-form">
+                    <input type="text" name="message" placeholder="Type something ...." autocomplete="off">
+                    <input type="submit" value="send" >
                 </form>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js" ></script>
             </div>
           </div>
   
       </div>
       <div>
+
+        <script>
+            function Send(event){
+                const token = localStorage.getItem('token');
+                event.preventDefault();
+                const message = event.target.message.value;
+
+                const obj = {
+                    message
+                }
+
+                //console.log(msg);
+                axios.post("http://localhost:7000/user/allMsg", obj, {headers:{"Authorization" : token}})
+                .then((response)=>{
+                    console.log(response);
+                    if(response.status === 200){
+                        console.log(response.data);
+                        event.target.message.value ='';
+                    }
+                }).catch(err=>console.log(err));
+            }
+
+
+
+
+
+        </script>
 
               
         </div>

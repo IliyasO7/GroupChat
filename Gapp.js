@@ -7,7 +7,6 @@ const bcrypt = require('bcrypt');
 
 
 
-
 const express = require('express'); //importing express module
 const bodyParser = require('body-parser');
 
@@ -16,6 +15,7 @@ const sequelize = require('./util/database'); //pool that allows use to use conn
 
 const User = require('./models/user');
 
+const Chat = require('./models/chatting')
 
 const Forgotpassword = require('./models/forgotPassword');
 
@@ -56,6 +56,8 @@ app.use('/pass',ForgotRoutes );
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
 
+User.hasMany(Chat);
+Chat.belongsTo(User);
 
 /*
 app.use((req,res)=>{
