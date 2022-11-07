@@ -3,13 +3,18 @@ const path = require('path');
 const express = require('express');
 
 const userController = require('../controllers/users');
-
+const chatController = require('../controllers/chatController')
+const middlewareAuthentication = require('../middleware/auth');
 
 const router = express.Router();
 
 
 router.post('/signup', userController.signup)
 router.post('/login',userController.login)
+
+router.post('/allMsg',middlewareAuthentication.authentication, chatController.postMessage)
+
+router.get('/getMsg', middlewareAuthentication.authentication, chatController.getMessages)
 
 module.exports = router;
 

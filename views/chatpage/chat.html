@@ -170,7 +170,7 @@
               <div class="notification-div">
                 <h4 class="notfification">Shrey joined!</h4>
               </div>
-  
+            <div class="chat-container-div">  
               <div class="msg-div">
                 <div class="resize-received">
                   <div class="received">
@@ -210,6 +210,7 @@
                   </div>
               </div>
               </div>
+              </div>
 
               <div >
                 <form onsubmit="Send(event)" class="style-form" id ="chat-form">
@@ -239,11 +240,96 @@
                     console.log(response);
                     if(response.status === 200){
                         console.log(response.data);
+                        
                         event.target.message.value ='';
+                        showOnScreen(message);
                     }
                 }).catch(err=>console.log(err));
             }
 
+
+            window.addEventListener('DOMContentLoaded', async(event)=>{
+              event.preventDefault();
+             // const User = localStorage.getItem('name');
+
+              let LastId;
+              let chatArray = [];
+              //console.log(`${new Date().getHours()}:${new Date().getMinutes()}`)
+
+              const token =  localStorage.getItem('token');
+              setInterval(async()=>{
+                try{
+                let response = await axios.get("http://localhost:7000/user/getMsg", {headers:{"Authorization" : token}})
+                console.log(response);
+                if(response.status === 200){
+                  showChatsOnScreen(response.data, response.data.username);
+                }
+
+              }
+              catch(error){
+                console.log(error);
+
+              }
+
+
+              },1000);
+           /*   try{
+                let response = await axios.get("http://localhost:7000/user/getMsg", {headers:{"Authorization" : token}})
+                console.log(response);
+                if(response.status === 200){
+                  showChatsOnScreen(response.data, response.data.username);
+                }
+
+              }
+              catch(error){
+                console.log(error);
+
+              }*/
+
+            })
+
+            function showChatsOnScreen(data, name){
+              console.log('inside show on scree: '+ name);
+              localStorage.setItem('name', name)
+              data.data.forEach(chat => {
+                showChat(chat, name);
+                
+              });
+            }
+
+
+            function showChat(chat , name){
+              let chatContainer = document.querySelector('.chat-container-div')
+              let child = `<div class= "message-div" >
+                              <div class= "resize-sent">
+                                  <div class= "sent">
+                                    <p class="sent-name">${name}</p>
+                                    <p class="sent-msg">${chat.message}</p>
+                                    <p class="sent-time">${chat.createdAt.split('T')[1].slice(0,5)}</p>
+                                    <p class="sent-time">${new Date().getHours()}:${new Date().getMinutes()}</p>
+                                    </div>
+                              </div>
+                           </div>`
+                  chatContainer.innerHTML += child;
+
+            }
+
+            function showOnScreen(chat){
+              let name = localStorage.getItem('name')
+              let chatContainer = document.querySelector('.chat-container-div')
+              let child = `<div class= "message-div" >
+                              <div class= "resize-sent">
+                                  <div class= "sent">
+                                    <p class="sent-name">${name}</p>
+                                    <p class="sent-msg">${chat.message}</p>
+ 
+                                    <p class="sent-time">${new Date().getHours()}:${new Date().getMinutes()}</p>
+                                    </div>
+                              </div>
+                           </div>`
+                  chatContainer.innerHTML += child;
+
+            }
 
 
 
