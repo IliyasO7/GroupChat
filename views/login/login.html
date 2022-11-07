@@ -71,9 +71,10 @@
                 .then((response)=>{
                     console.log(response);
                     localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('name', response.data.username);
                     if(response.status === 200)
                     {
-                         window.location.href = "../chatpage/chat.html"
+                         window.location.href = "../group/group.html"
                         // redirect('./expense.html')
                         console.log('login  complete');
                     }

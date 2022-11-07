@@ -16,6 +16,8 @@ const sequelize = require('./util/database'); //pool that allows use to use conn
 const User = require('./models/user');
 
 const Chat = require('./models/chatting')
+const Group = require('./models/group');
+const UserGroup = require('./models/usergroups');
 
 const Forgotpassword = require('./models/forgotPassword');
 
@@ -36,6 +38,8 @@ app.use(cors());
 
 
 const userRoutes = require('./routes/users');
+const messageRoutes = require('./routes/messageRoutes')
+const groupRoutes = require('./routes/groupRoutes')
 const ForgotRoutes = require('./routes/password');
 
 app.use(express.json())//instead of body parson json
@@ -44,20 +48,33 @@ app.use(express.json())//instead of body parson json
 
 //app.use(express.static(path.join(__dirname,'public')));
 
-
-
-
-app.use('/user',userRoutes);
-
-app.use('/pass',ForgotRoutes );
-
-
-
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
 
 User.hasMany(Chat);
 Chat.belongsTo(User);
+Group.hasMany(Chat);
+Chat.belongsTo(Group);
+User.belongsToMany(Group , {through: UserGroup} )
+Group.belongsToMany(User , {through: UserGroup} )
+
+
+
+
+app.use('/user',userRoutes);
+
+app.use('/group', groupRoutes );
+
+app.use('/message', messageRoutes);
+
+
+
+app.use('/pass',ForgotRoutes );
+
+
+
+
+
 
 /*
 app.use((req,res)=>{

@@ -124,23 +124,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, initial-scale=1">
 
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,600">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.1.2/css/material-design-iconic-font.min.css">
-  <link rel="stylesheet" href="styles/vendor/devices.min.css">
-  <link rel="stylesheet" href="styles/main.css">
+ 
 </head>
 <body>
   <div class="page">
-    <div class="marvel-device nexus5">
-      <div class="top-bar"></div>
-      <div class="sleep"></div>
-      <div class="volume"></div>
-      <div class="camera"></div>
-      <div class="screen">
+    
         <div class="screen-container">
 
           <div class="chat">
@@ -162,6 +150,30 @@
                   </div>
                 
               </div>
+
+
+
+              <div class="left">
+                <div class ='create-group'>
+                  <form id="form-group">
+                    <div >
+                      <input type="text" name="groupname" class="groupName" autocomplete="off">
+                      <input type="submit" value="+" class="add-btn">
+                    </div>
+                  </form>
+                </div>
+                <div class="groups" style="border-right: 1px solid #373f44;" id="group">
+                  <div style="width:100%;color:white" class="group-style">
+                    <button class="user-btn">User 1</button>
+                    <button class="add-user">+</button>
+                    <button class="remove-user">-</button>
+                    <button class="delete-group">r</button>
+                  </div>
+                </div>
+        
+              </div>
+
+              
 
               <div class="notification-div">
                 <h4 class="notfification">You joined!</h4>
@@ -227,24 +239,30 @@
         <script>
             function Send(event){
                 const token = localStorage.getItem('token');
+                let groupId = localStorage.getItem('groupId');
+                console.log(groupId);
+                let name = localStorage.getItem('name');
+
                 event.preventDefault();
                 const message = event.target.message.value;
-
+              console.log(message);
                 const obj = {
                     message
                 }
 
                 //console.log(msg);
-                axios.post("http://localhost:7000/user/allMsg", obj, {headers:{"Authorization" : token}})
+                axios.post(`http://localhost:7000/message/allMsg/${groupId}`, obj, {headers:{"Authorization" : token}})
                 .then((response)=>{
+                    console.log('*******************');
                     console.log(response);
                     if(response.status === 200){
                         console.log(response.data);
                         
                         event.target.message.value ='';
+                        console.log(response);
                         //showOnScreen(message);
-                        let name = localStorage.getItem('name');
-                        saveToLocal(response.data.data, name);
+                        
+                        //saveToLocal(response.data);
 
                     }
                 }).catch(err=>console.log(err));
@@ -254,8 +272,19 @@
             window.addEventListener('DOMContentLoaded', async(event)=>{
               event.preventDefault();
               const token = localStorage.getItem('token');
+              const groupId = localStorage.getItem('groupId');
+              console.log('---------------------');
+              console.log(groupId);
+              const groupName = localStorage.getItem('groupName');
               let lastId;
 
+              getMessage(groupId);
+              getUsers(groupId);
+
+
+              
+
+/*
               const messages = JSON.parse(localStorage.getItem('msg')); //converts into obj
 
               if(messages == undefined || messages.length == 0){
@@ -265,7 +294,7 @@
                 lastId = messages[messages.length-1].id;
               }
 
-
+*/
              // const User = localStorage.getItem('name');
 
               //let LastId;
@@ -289,10 +318,13 @@
 
 
               },1000);*/
+
+
+              /*
               try{
 
 
-                let response = await axios.get(`http://localhost:7000/user/getMsg?msg=${lastId}`, {headers:{"Authorization" : token}})
+                let response = await axios.get(`http://localhost:7000/message/getMsg?msg=${lastId}`, {headers:{"Authorization" : token}})
                 console.log(response);
 
                 var newArr = response.data.messagestosend;
@@ -306,13 +338,17 @@
                 console.log(error);
 
               }
-
+*/
             })
 
-            function saveToLocal(arr,name){
+            function saveToLocal(arr){
+              let groupId = localStorage.getItem('groupId')
+              console.log('999999999999');
+              console.log(groupId);
 
               let chatArray = [];
-              let oldMessages = JSON.parse(localStorage.getItem('msg'));
+              let oldMessages = JSON.parse(localStorage.getItem(`msg${groupId}`));
+              console.log(oldMessages);
 
               if(oldMessages == undefined || oldMessages.length ==0){
                 chatArray = chatArray.concat(arr)
@@ -321,6 +357,9 @@
                 chatArray = [];
                 chatArray = chatArray.concat(oldMessages,arr);
               }
+              console.log(typeof(chatArray));
+              let parseChat = JSON.stringify(chatArray)
+              console.log(typeof(parseChat));
              // console.log(chatArray);
              // console.log(typeof(chatArray))
             //  JSON.stringify(chatArray);
@@ -329,22 +368,68 @@
              //console.log(typeof(chatArray));
               //localStorage.setItem('msg', chatArray)
               //localStorage.setItem('msg', JSON.parse(chatArray))
-              localStorage.setItem('msg' , JSON.stringify(chatArray))
-              console.log((JSON.parse(localStorage.getItem('msg'))).length)
-              showChatsOnScreen(name);
+            localStorage.setItem(`msg${groupId}` , parseChat)
+             console.log('0000');
+             console.log(localStorage.getItem(`msg${groupId}`))
+             //console.log(check);
+              console.log((JSON.parse(localStorage.getItem(`msg${groupId}`))).length)
+              showChatsOnScreen();
 
 
             }
 
-            function showChatsOnScreen(name){
-              console.log('inside show on scree: '+ name);
-              localStorage.setItem('name', name)
 
-              let chatArray = localStorage.getItem('msg')
+            async function getMessage(groupId){
+              console.log('{{{{{{{{{{{{{{{');
+              console.log(groupId);
+              const token = localStorage.getItem('token');
+             
+              let lastId;
+              
+              const messages = JSON.parse(localStorage.getItem(`msg${groupId}`)); //converts into obj
+
+              if(messages == undefined || messages.length == 0){
+                lastId =0;
+              }
+              else{
+                lastId = messages[messages.length-1].id;
+              }
+
+              try{
+                let response = await axios.get(`http://localhost:7000/message/getMsg/${groupId}?msg=${lastId}`, {headers:{"Authorization" : token}})
+                console.log('77777');
+                console.log(response.data.arr);
+              //  var newArr = response.data.arr
+                 saveToLocal(response.data.arr);
+
+
+
+              }
+              catch(error){
+                console.log(error);
+              }
+
+
+
+
+            }
+
+
+
+
+            function showChatsOnScreen(){
+             // console.log('inside show on scree: '+ name);
+//              localStorage.setItem('name', name)
+              let name = localStorage.getItem('name');
+              let groupId= localStorage.getItem('groupId')
+
+              let chatArray = localStorage.getItem(`msg${groupId}`)
+              console.log('....................');
               console.log(chatArray);
               let newChatArray =  JSON.parse(chatArray)
+              console.log(newChatArray);
               let chatContainer = document.querySelector('.chat-container-div')
-
+              chatContainer.innerHTML = "";
             /*  for(let i=0; i<chatArray.length ; i++){
                 let child = `<div class= "message-div" >
                               <div class= "resize-sent">
@@ -361,10 +446,13 @@
               }*/
 
               newChatArray.forEach(chat => {
-                let child = `<div class= "message-div" >
+                console.log(chat);
+
+                if(name == chat.name){
+                  let child = `<div class= "message-div" >
                               <div class= "resize-sent">
                                   <div class= "sent" id=${chat.id}>
-                                    <p class="sent-name">${name}</p>
+                                    <p class="sent-name">${chat.name}</p>
                                     <p class="sent-msg">${chat.message}</p>
                                     <p class="sent-time">${chat.createdAt.split('T')[1].slice(0,5)}</p>
                                   
@@ -373,6 +461,28 @@
                            </div>
                               `
                   chatContainer.innerHTML += child;
+
+                }
+                else{
+
+                  let child = `<div class="msg-div">
+                                  <div class="resize-received">
+                                    <div class="received" id=${chat.id}>
+                                      <p class="received-name">${chat.name}</p>
+                                      <p class="received-msg">${chat.message}</p>
+                                    
+                                    </div>
+                                  </div>
+                                </div>`
+
+                   chatContainer.innerHTML += child
+
+
+
+                }
+
+
+                
                 
               });
               //document.getElementById(`${lastId}`).scrollIntoView()
@@ -381,6 +491,35 @@
                   <p class="sent-time">${new Date().getHours()}:${new Date().getMinutes()}</p>
               });*/
             }
+
+
+            async function getUsers(groupId){
+              const token = localStorage.getItem('token');
+
+              try {
+                    console.log('sdfsdfsdfsdfsdfsdf')
+                    let response =  await axios.get(`http://localhost:7000/group/fetchusers/${groupId}`  , {headers:{"Authorization" : token}})
+                    console.log(response.data);
+
+                    response.data.forEach( data => addGroupUsersToScreen(data))
+                } catch (err) {
+                  console.log(err);
+
+                }
+
+            }
+
+            function addGroupUsersToScreen(data){
+              let userParent = document.getElementById('group');
+                      let child = `<div style="width:100%;color:white" class="group-style">
+                      <button class="user-btn">${data.name}</button>
+                      <button class="add-user" >+</button>
+                      <button class="remove-user">-</button>
+                      <button class="delete-group">r</button>
+                    </div>`
+                    userParent.innerHTML += child
+                
+                  }
 
 
       /*      function showChat(chat , name){

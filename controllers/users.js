@@ -69,15 +69,12 @@ exports.login = async(req,res)=>{
 
     const user = await User.findAll({where:{email}})
 
-
-    
-
     if(user.length>0){
       bcrypt.compare(password, user[0].password, (err, match)=> {
         if(!match){
            return res.status(207).json({message: 'password incorrect'})
         }
-        return res.status(200).json({message: 'login success',token: generateToken(user[0].id)});
+        return res.status(200).json({message: 'login success',token: generateToken(user[0].id), name:user.username});
     })
     }
    else{
