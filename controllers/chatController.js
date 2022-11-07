@@ -4,14 +4,24 @@ const Chat = require('../models/chatting')
 const User = require('../models/user');
 
 exports.getMessages = async(req,res,next)=>{
+  let msgId = req.query.msg;
 
   try{
     const data = await req.user.getChats();
 
+    console.log(data.length);
+
+    let index = data.findIndex(chat => chat.id == msgId)
+
+    let messagestosend = data.slice(index+1);
+
+
+
+
     let username = await req.user.username;
 
     console.log(username.split(' ')[0])
-    res.status(200).json({data, username})
+    res.status(200).json({messagestosend, username})
 
   }
   catch(error){

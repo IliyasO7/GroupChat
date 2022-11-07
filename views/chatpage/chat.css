@@ -293,30 +293,6 @@ body {
     height: 100%;
   }
   
-  /* Status Bar */
-  
-  .status-bar {
-    height: 25px;
-    background: #004e45;
-    color: #fff;
-    font-size: 14px;
-    padding: 0 8px;
-  }
-  
-  .status-bar:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  
-  .status-bar div {
-    float: right;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: 0 0 0 8px;
-    font-weight: 600;
-  }
   
   /* Chat */
   
@@ -904,9 +880,68 @@ body {
   }
 
 
-  .message{
-
+  .message-division{
+    
     display: flex;
     width: auto;
+    float: inline-start;
+    width: 250px;
+    height: 5000px;
     
+  }
+
+
+
+  .logout-div{
+    position: absolute;
+    display: flex;
+    float: inline-end;
+    width: 150px;
+    height: 130px;
+  }
+  #logout {
+    cursor: pointer;
+    margin-top: 40px;
+    margin-left: 1200px;
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    color: antiquewhite;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    background-color:rgb(26, 97, 21)
+  }
+  #logout:hover {
+    background-color: rgb(184, 0, 0);
+
+  }
+
+  
+
+  .style-form{
+   margin-top: 40px;
+   margin-left: 500px;
+    width:70% ;
+    
+  }
+
+  .style-form input[type=text]{
+    
+    width: 80%;
+    border: 2px solid;
+    border-radius: 23px;
+    height: 38px;
+    margin: 10px ;
+    text-indent: 15px;
+    font-size: 19px;
+  }
+
+  .style-form input[type=submit]{
+    border-radius: 50%;
+    height: 41px;
+    width: 41px;
+ 
+    background-color: #25D366;
+    border: none;
+    color: white;
   }
