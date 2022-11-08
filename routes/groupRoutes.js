@@ -16,4 +16,17 @@ router.post('/createGroup', middlewareAuthentication.authentication, groupContro
 
 router.get('/fetchusers/:groupId',middlewareAuthentication.authentication, usergroupcontroller.fetchUsers)
 
+router.post('/addUser',middlewareAuthentication.authentication, usergroupcontroller.addUser)
+
+router.post('/makeAdmin', middlewareAuthentication.authentication, usergroupcontroller.makeAdmin)
+
+router.get('/isAdmin/:groupId', middlewareAuthentication.authentication, usergroupcontroller.isAdmin)
+
+router.post('/removeAdmin', middlewareAuthentication.authentication, usergroupcontroller.removeAdmin)
+
+router.post('/removeUser',middlewareAuthentication.authentication, usergroupcontroller.removeUser)
+
+
+
+
 module.exports = router;

@@ -18,20 +18,24 @@ exports.getMessages = async(req,res,next)=>{
     let index = data.findIndex(chat => chat.id == msgId)
 
     let messagestosend = data.slice(index+1);
+    //const name = req.user.username;
 
     let arr = [];
 
     for(let i = 0 ; i<messagestosend.length ; i++){
 
         const user = await User.findByPk(messagestosend[i].userId);
+       
+        
 
         const details = {
             id :messagestosend[i].id ,
             groupId:messagestosend[i].groupId,
-            name:user.username ,
+            name:user.username,
             message:messagestosend[i].message,
             createdAt:messagestosend[i].createdAt
         }
+       
 
         arr.push(details)
     }
@@ -71,9 +75,9 @@ exports.postMessage = async(req,res,next)=>{
         const details = {
           id: data.id,
           groupId: data.groupId,
-          nmae:req.user.username,
+          name:req.user.username,
           message: data.message,
-          createdAt: data.createAt
+          createdAt: data.createdAt
         }
 
         arr.push(details);

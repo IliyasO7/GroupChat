@@ -5,7 +5,6 @@ const User = require('../models/user');
 const Usergroups = require('../models/usergroups');
 
 
-
 exports.getGroups = async(req,res,next)=>{
 
     try{
@@ -38,7 +37,7 @@ exports.createGroup = async(req,res,next)=>{
         if(!grp){
             res.status(404).json({message:"no name entered"})
         }
-        let data = await req.user.createGroup({name:grp})
+        let data = await req.user.createGroup({name:grp},  {through:{isAdmin:true}});
         res.status(201).json({ message:'successfully created new group'})
 
     }

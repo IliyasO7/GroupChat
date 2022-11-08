@@ -154,34 +154,28 @@
 
 
               <div class="left">
-                <div class ='create-group'>
-                  <form id="form-group">
+                <div class ='create-group' id="add-user">
+                  <form onsubmit="addingUser(event)" id="form-group">
                     <div >
-                      <input type="text" name="groupname" class="groupName" autocomplete="off">
+                      <input type="email" name="email" class="groupName" placeholder="search by email" autocomplete="off">
                       <input type="submit" value="+" class="add-btn">
                     </div>
                   </form>
                 </div>
                 <div class="groups" style="border-right: 1px solid #373f44;" id="group">
-                  <div style="width:100%;color:white" class="group-style">
+                <!--  <div style="width:100%;color:white" class="group-style">
                     <button class="user-btn">User 1</button>
                     <button class="add-user">+</button>
                     <button class="remove-user">-</button>
                     <button class="delete-group">r</button>
-                  </div>
+                  </div>-->
                 </div>
         
               </div>
 
               
 
-              <div class="notification-div">
-                <h4 class="notfification">You joined!</h4>
-              </div>
-  
-              <div class="notification-div">
-                <h4 class="notfification">Shrey joined!</h4>
-              </div>
+             
             <div class="chat-container-div">  
               <div class="msg-div">
                 <div class="resize-received">
@@ -253,16 +247,19 @@
                 //console.log(msg);
                 axios.post(`http://localhost:7000/message/allMsg/${groupId}`, obj, {headers:{"Authorization" : token}})
                 .then((response)=>{
-                    console.log('*******************');
-                    console.log(response);
+                   
+                    //console.log(response);
                     if(response.status === 200){
+                      console.log('*******************');
+
                         console.log(response.data);
                         
                         event.target.message.value ='';
                         console.log(response);
+                        //showChatsOnScreen()
                         //showOnScreen(message);
                         
-                        //saveToLocal(response.data);
+                        saveToLocal(response.data.arr);
 
                     }
                 }).catch(err=>console.log(err));
@@ -273,13 +270,19 @@
               event.preventDefault();
               const token = localStorage.getItem('token');
               const groupId = localStorage.getItem('groupId');
+              const admin = localStorage.getItem('isAdmin');
               console.log('---------------------');
               console.log(groupId);
               const groupName = localStorage.getItem('groupName');
               let lastId;
-
+              isAdmin(groupId);
               getMessage(groupId);
               getUsers(groupId);
+
+              if(isAdmin){
+                document.getElementById('add-user').classList.add('admin');
+                console.log('i am inside if admin');
+              }
 
 
               
@@ -340,6 +343,21 @@
               }
 */
             })
+
+            async function isAdmin(groupId){
+              try{
+                const token = localStorage.getItem('token');
+                let response = await  axios.get(`http://localhost:7000/group/isAdmin/${groupId}`, {headers:{"Authorization" : token}})
+                localStorage.setItem('isAdmin', response.data)
+
+                if(JSON.parse(localStorage.getItem('isAdmin'))){
+                  document.getElementById('add-user').classList.add('admin');
+                }
+              }
+              catch(err){
+                console.log(err);
+              }
+            }
 
             function saveToLocal(arr){
               let groupId = localStorage.getItem('groupId')
@@ -418,6 +436,7 @@
 
 
             function showChatsOnScreen(){
+              console.log('NEW message through send');
              // console.log('inside show on scree: '+ name);
 //              localStorage.setItem('name', name)
               let name = localStorage.getItem('name');
@@ -446,10 +465,12 @@
               }*/
 
               newChatArray.forEach(chat => {
+                console.log('||||||||||||||||');
                 console.log(chat);
+                console.log('{{{{{{{{{{{{{{[');
 
                 if(name == chat.name){
-                  let child = `<div class= "message-div" >
+                  let child = `<div class= "msg-div" >
                               <div class= "resize-sent">
                                   <div class= "sent" id=${chat.id}>
                                     <p class="sent-name">${chat.name}</p>
@@ -470,7 +491,7 @@
                                     <div class="received" id=${chat.id}>
                                       <p class="received-name">${chat.name}</p>
                                       <p class="received-msg">${chat.message}</p>
-                                    
+                                      <p class="sent-time">${chat.createdAt.split('T')[1].slice(0,5)}</p>
                                     </div>
                                   </div>
                                 </div>`
@@ -501,7 +522,17 @@
                     let response =  await axios.get(`http://localhost:7000/group/fetchusers/${groupId}`  , {headers:{"Authorization" : token}})
                     console.log(response.data);
 
-                    response.data.forEach( data => addGroupUsersToScreen(data))
+                    let adm = JSON.parse(localStorage.getItem('isAdmin'));
+
+                    if(adm){
+                      response.data.forEach( data => addGroupUsersToScreen(data))
+
+                    }
+                    else{
+                      response.data.forEach( data => addGroupUsersToScreenNotAdmin(data))
+                    }
+
+                    
                 } catch (err) {
                   console.log(err);
 
@@ -510,16 +541,148 @@
             }
 
             function addGroupUsersToScreen(data){
+              console.log(data);
               let userParent = document.getElementById('group');
-                      let child = `<div style="width:100%;color:white" class="group-style">
-                      <button class="user-btn">${data.name}</button>
-                      <button class="add-user" >+</button>
-                      <button class="remove-user">-</button>
-                      <button class="delete-group">r</button>
-                    </div>`
-                    userParent.innerHTML += child
+                      let child = `<div style="width:100%;color:white" class="group-style" id=${data.id}>
+                        <button class="user-btn">${data.username}</button>
+                        <div class="admin-buttons">
+                        <button class="add-user" onclick="makeAdmin('${data.id}')">+</button>
+                        <button class="remove-user" onclick="removeAdmin('${data.id}')">-</button>
+                        <button class="delete-group" onclick="removeUser('${data.id}')" >r</button>
+                        </div>
+                      </div>`
+                     userParent.innerHTML += child
                 
                   }
+              
+            function addGroupUsersToScreenNotAdmin(data){
+              let userParent = document.getElementById('group');
+              let child = `<div style="width:100%;color:white" class="group-style" id=${data.id}
+                    <button class="user-btn">${data.name}</button>
+                    </div>`
+
+                    
+                      userParent.innerHTML += child
+
+            }
+
+            async function makeAdmin(userId){
+              const token = localStorage.getItem('token');
+              let groupId = localStorage.getItem('groupId');
+
+              const details = {
+                userId,
+                groupId
+              }
+
+              try{
+                let response = await axios.post(`http://localhost:7000/group/makeAdmin` ,details  , {headers:{"Authorization" : token}})
+                console.log(response);
+                alert('user is admin now');
+
+              }
+              catch(err){
+                console.log(err);
+              }
+
+
+
+
+            }
+
+            async function removeAdmin(userId){
+              const token = localStorage.getItem('token');
+              let groupId = localStorage.getItem('groupId');
+              console.log('make   adminnnnnnnnnn')
+              const details = {
+                  userId,
+                  groupId
+              }
+              console.log(details )
+              try {
+                  let response = await axios.post(`http://localhost:7000/group/removeAdmin` ,details  , {headers:{"Authorization" : token}})
+                  console.log(response);
+                  alert('removed admin');
+              } catch (err) {
+                  console.log(err)
+              }
+          }
+
+
+
+
+
+            async function removeUser(userId){
+              let groupId = localStorage.getItem('groupId')
+              const token =localStorage.getItem('token');
+              const details = {
+                userId,
+                groupId
+              }
+
+              try{
+                let response = await axios.post(`http://localhost:7000/group/removeUser` ,details  , {headers:{"Authorization" : token}})
+                alert('removed user succesfully');
+                console.log(response);
+                removeUserFromScreen(response.data.user)
+
+              }
+              catch(err){
+                if(err.response.data == 402){
+                  alert('Only Admin can delete')
+                }
+                if(err.response.data == 404){
+                  alert('no group or user found');
+                }
+              }
+
+              
+            }
+
+            async function addingUser(event){
+              event.preventDefault();
+              const token = localStorage.getItem('token')
+              let groupId = localStorage.getItem('groupId');
+              let email = event.target.email.value;
+
+              const details = {
+                email,
+                groupId
+              }
+
+              try{
+
+                let response = await axios.post(`http://localhost:7000/group/addUser`  ,details ,  {headers:{"Authorization" : token}})
+                console.log(response);
+
+                addGroupUsersToScreen(response.data.user)
+                alert('user added successfully')
+                document.querySelector('.groupName').value =" "
+
+              }
+              catch(err){
+                if(err.response.status == 401){
+                    alert("user already in group")
+                }if(err.response.status == 400){
+                    alert("enter email")
+                }if(err.response.status == 404){
+                    alert("user not found")
+                }
+              }
+
+
+
+
+
+            }
+
+
+            function removeUserFromScreen(user){
+              let userParent = document.getElementById('group')
+              let child = document.getElementById(`${user.id}`)
+
+              userParent.removeChild(child);
+            }
 
 
       /*      function showChat(chat , name){
